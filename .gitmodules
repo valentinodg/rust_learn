@@ -1,0 +1,3 @@
+[submodule "b_ggame"]
+  path = b_ggame
+  url = https://github.com/valentinodg/casual_rust.git
