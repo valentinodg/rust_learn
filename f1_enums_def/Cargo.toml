@@ -1,5 +1,5 @@
 [package]
-name = "f1_enum_def"
+name = "f1_enums_def"
 version = "0.1.0"
 authors = ["valentinodg <valentino.digiosaffatte@student.univaq.it>"]
 edition = "2018"
