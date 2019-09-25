@@ -1,1 +1,1 @@
-# casual rust code
+# rust
