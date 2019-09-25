@@ -1,0 +1,7 @@
+#!/bin/bash
+
+git pull
+git add -A
+git status
+git commit -am.
+git push -u origin master
