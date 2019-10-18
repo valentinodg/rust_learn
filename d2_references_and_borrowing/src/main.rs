@@ -1,8 +1,8 @@
 fn main() {
     let s1 = String::from("hello");
 
-    //using the reference to the variable s1 as a parameter 
-    //of the function makes the variable s1 
+    //using the reference to the variable s1 as a parameter
+    //of the function makes the variable s1
     //still available after the call
     let s2 = calculate_lenght(&s1);
 
@@ -24,7 +24,7 @@ fn main() {
     //rust prevents data races at compile time
     //by not allowing us to have multiple mutable references
     //to a piece of data in the same scope
-    
+
     //this rule also exists for a combination of mutable
     //and immutable references
 
@@ -49,7 +49,7 @@ fn main() {
     r2.push_str(" by me!");
     println!("r2: \"{}\"", r2);
 
-    //if the immutable references are no longer used 
+    //if the immutable references are no longer used
     //you can declare a mutable reference in the same scope
     let mut s4 = String::from("hello");
 
@@ -67,7 +67,7 @@ fn main() {
 //have references as function parameters is called borrowing
 //when we apply borrowing the own of the variable we
 //passed as parameter of the function doesn't change
-//therefore we are not allowed to modify 
+//therefore we are not allowed to modify
 //the value of the variable -> error
 fn calculate_lenght(s: &String) -> usize {
     s.len()

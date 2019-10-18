@@ -1,5 +1,4 @@
 fn main() {
-    
     //loops with loop statement
     let mut x: i32 = 0;
     loop {
@@ -26,7 +25,7 @@ fn main() {
     println!("result: {}", result);
 
     println!();
-    
+
     //loop with while statement
     let mut number = 3;
 
@@ -39,7 +38,7 @@ fn main() {
     println!();
 
     //while loop to interate over the elements of a collection
-    let a = [10,20,30,40,50];
+    let a = [10, 20, 30, 40, 50];
     let mut index = 0;
 
     while index < 5 {
@@ -50,7 +49,7 @@ fn main() {
     println!();
 
     //for loop to interate over the elements of a collection
-    let b = [10,20,30,40,50];
+    let b = [10, 20, 30, 40, 50];
 
     for element in b.iter() {
         println!("{}", element);
@@ -59,7 +58,7 @@ fn main() {
     println!();
 
     //loop with for statement using Range and rev
-    //the Range type is provided by the std lib and serves to 
+    //the Range type is provided by the std lib and serves to
     //generate numberical sequences
     //(1..4) -> 1 included, 4 excluded
     //the rev method serves to reverse a range
@@ -68,4 +67,3 @@ fn main() {
     }
     println!("...listoff");
 }
-

@@ -1,5 +1,5 @@
 fn main() {
-    //scope 
+    //scope
     //valid from the declaration point
     //to the end of the current scope
 
@@ -8,11 +8,14 @@ fn main() {
     //error -> string literal is immutable
     //because is stored on the stack
     let /*mut*/ r = "hello";
-    println!("\nr: \"{}\" (string literal -> immutable (allocated on the stack)", r);
+    println!(
+        "\nr: \"{}\" (string literal -> immutable (allocated on the stack)",
+        r
+    );
 
     //string data type introduction (discussed later)
     //strings are stored on the heap (not on the stack)
-    
+
     //create a string from a string literal
     //using String type and from() function
     //String is a mutable type because it is stored on the heap
@@ -21,7 +24,10 @@ fn main() {
     //the :: operator allow us to namespace the from() function
     //under the String type
     s.push_str(" world");
-    println!("s: \"{}\" (String type -> mutable (allocated on the heap)", s);
+    println!(
+        "s: \"{}\" (String type -> mutable (allocated on the heap)",
+        s
+    );
 
     //in rust the memory is automatically returned
     //to the os once the variable that owns it goes out of scope
@@ -57,16 +63,16 @@ fn main() {
     let s2 = s1.clone();
     println!("\ns1: {}, s2: {}", s1, s2);
 
-    //after we see the Copy trait that allow us to use an old 
+    //after we see the Copy trait that allow us to use an old
     //variable after an assignment (only valid for stack types)
-    //we also see the Drop trait 
+    //we also see the Drop trait
 
     //variable scope, ownership and functions
     println!("");
 
     let s = String::from("hello");
     takes_ownership(s);
-    
+
     let x = 5;
     makes_copy(x);
 
@@ -82,21 +88,20 @@ fn main() {
     //return values back to use again
     //s1 arg of s2 so no more available
     let s1 = String::from("hello");
-    let (s2,len) = calculate_lenght(s1);
+    let (s2, len) = calculate_lenght(s1);
     //we can use s2 again because we have created
-    //a function that returns it back 
+    //a function that returns it back
     println!("\nthe lenght of '{}' is {}", s2, len);
 
     //we will see a rust feature that is used to manage
     //this kind of situations -> references
 }
 
-
-fn takes_ownership(some_string: String){
+fn takes_ownership(some_string: String) {
     println!("takes_ownership(\"{}\")", some_string);
 }
 
-fn makes_copy(some_integer: i32){
+fn makes_copy(some_integer: i32) {
     println!("makes_copy({})", some_integer);
 }
 
@@ -109,7 +114,7 @@ fn takes_and_gives_back(a_string: String) -> String {
     a_string
 }
 
-fn calculate_lenght(s: String) -> (String, usize){
+fn calculate_lenght(s: String) -> (String, usize) {
     let lenght = s.len();
-    (s,lenght)
+    (s, lenght)
 }

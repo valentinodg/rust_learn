@@ -7,7 +7,7 @@ fn main() {
     //str that is usually seen in its borrowed form &str
     //we talked about string slices which are references to some UTF-8 encoded
     //string data store elsewhere
-    
+
     //the String type which is provided by rust's std lib rather than coded into
     //the core language, is a growable, mutable, owned, UTF-8 encoded string type
     //when rustaceans refer to "strings" in rust, they usually mean the String
@@ -18,9 +18,9 @@ fn main() {
     //for storing string data
     //the names that ends with String refers to the owned variants and the names
     //that ends with Str refers to the borrowed variants
-    
+
     //create a new string
-    //many of the same operations available with Vec<T> are available with String 
+    //many of the same operations available with Vec<T> are available with String
     //as well
     //let's use the new function to create a string
 
@@ -38,12 +38,15 @@ fn main() {
     //the code creates a string containing "initial contents"
     //we can also use the function String::from to create String from a string
     //literal
-    
+
     let s2 = String::from("initial contents");
-    //because strings are UFT-8 encoded we can include any properly encoded data 
+    //because strings are UFT-8 encoded we can include any properly encoded data
     //in them
 
-    println!("\ns: \"{}\"\ndata: \"{}\"\ns1: \"{}\"\ns2: \"{}\"", s, data, s1, s2);
+    println!(
+        "\ns: \"{}\"\ndata: \"{}\"\ns1: \"{}\"\ns2: \"{}\"",
+        s, data, s1, s2
+    );
 
     //updating a string
 
@@ -58,7 +61,7 @@ fn main() {
 
     let mut s3 = String::from("foo");
     s3.push_str("bar");
-    
+
     println!("\ns3: \"{}\"", s3);
     //the push_str() method takes a string slice because we don't necessarily want
     //to take ownership of the parameter
@@ -89,13 +92,13 @@ fn main() {
     println!("\nstring2: \"{}\"", string2);
 
     //string2 will contain "hello world!" as a result of this code
-    //the reason string0 is no longer valid after the addition and the reason we used 
+    //the reason string0 is no longer valid after the addition and the reason we used
     //a reference to string1 has to do with the signature of the method that gets
     //called when we use the + operator
     //
     //the + operator uses the add method, whose signature looks something like this:
     //fn add(self, s: &str) -> String {}
-    //(this isn't the exact signature that's in the std lib, because in std add is 
+    //(this isn't the exact signature that's in the std lib, because in std add is
     //defined using generics)
     //
     //the second parameter has an &, meaning that we're adding a reference of the
@@ -110,13 +113,13 @@ fn main() {
     //the implementation is more efficient than copying
 
     //multiple concatenation
-    
+
     //using the + operator
     let s7 = String::from("tic");
     let s8 = String::from("tac");
     let s9 = String::from("toe");
 
-    let fs = s7 + " " +  &s8 + " " + &s9;
+    let fs = s7 + " " + &s8 + " " + &s9;
 
     println!("\nfs: \"{}\"", fs);
 
@@ -130,9 +133,9 @@ fn main() {
     println!("fs2: \"{}\"", fs2);
     //the format! macro works in the same way as println!
     //it returns a String with contents
-    //the version of code using format! is much easier to read and doesn't take 
+    //the version of code using format! is much easier to read and doesn't take
     //ownership of any of its parameters
-    
+
     //indexing into Strings
 
     //in many other programming languages, accessing individual characters in a string
@@ -141,7 +144,7 @@ fn main() {
     //tust, you'll get an error
     //rust strings don't support indexing because of way that rust stores strings
     //in memory
-    
+
     //internal representation
 
     //a String is a wrapper over a Vec<u8>
@@ -154,7 +157,7 @@ fn main() {
     let len2 = String::from("Здравствуйте").len();
     println!("len2: {}", len2);
     //in this case each unicode scalar value in that string takes 2 bytes of storage
-    //therefore an index into the string's bytes will not always correlate to a 
+    //therefore an index into the string's bytes will not always correlate to a
     //valid unicode scalar value
 
     //to avoid returning unexpected values and causing bugs taht might not be discovered
@@ -167,7 +170,7 @@ fn main() {
 
     //rust looks at strings in 3 ways: as bytes, scalar values and grapheme clusters
     //
-    //let's traduce the Hindi word “नमस्ते” representation in bytes, scalar values 
+    //let's traduce the Hindi word “नमस्ते” representation in bytes, scalar values
     //and grapheme clusters
     //
     //(in bytes -> vector of u8 values)
@@ -180,9 +183,9 @@ fn main() {
     //(in grapheme clusters -> human readable letters)
     //["न", "म", "स्", "ते"]
 
-    //a final reason rust doesn't allow us to index into a String to get a characters 
+    //a final reason rust doesn't allow us to index into a String to get a characters
     //is that indexing operations are expected to always take constant time O(1)
-    //but it isn't possible to guarantee that performance with a String because rust 
+    //but it isn't possible to guarantee that performance with a String because rust
     //would have to walk through the contents from the beginning to the index to
     //determine how many valid characters there were
 
@@ -193,7 +196,7 @@ fn main() {
     //a grapheme cluster, or a string slice
     //if you want to use a string slice you need to be more precise in your indexing
     //and use [] with a range to create a string slice containing particular bytes
-    
+
     let sstring = "Здравствуйте";
     let stringslice = &sstring[0..4];
     println!("\nstringslice: \"{}\"\n", stringslice);
@@ -202,13 +205,13 @@ fn main() {
 
     //methods for iterating over strings
 
-    //if you need to perform operations on individual unicode scalar values (access 
+    //if you need to perform operations on individual unicode scalar values (access
     //elements in a string) you can use the chars method (best way)
-    
+
     for c in "Здрав".chars() {
         print!("{} ", c);
     }
-    
+
     println!("");
 
     //the bytes method returns each raw byte of the string
@@ -220,6 +223,6 @@ fn main() {
 
     //remember that unicode scalar values may be made up of more than 1 byte
     //getting grapheme clusters from strings is complex so this functionality is not
-    //provided by the std lib (look at crates available on crates.io for this 
+    //provided by the std lib (look at crates available on crates.io for this
     //functionality)
 }

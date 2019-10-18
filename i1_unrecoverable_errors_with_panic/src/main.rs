@@ -35,18 +35,18 @@ fn main() {
 
     //we can use the backtrace of the functions the panic! call came from to figure out the part of
     //our code that is causing  the problem
-    
+
     //using a panic! backtrace
 
     //let's look at another example to see what it's like when a panic! call comes from a library
     //because of a bug in our code instead of from our code calling the macro directly
 
-    let v = vec![1,2,3];
+    let v = vec![1, 2, 3];
 
     v[99];
     //this particular situation may cause a buffer overread and can lead to security
     //vulnerabilities in languages like C
-    //the C language, will attempt to give you exactly what you asked for in this situation, 
+    //the C language, will attempt to give you exactly what you asked for in this situation,
     //even though it isn't what you want: you'll get whathever is at the location in
     //memory that would correspond to that element in the vector, even though the memory doesn't
     //belong to the vector

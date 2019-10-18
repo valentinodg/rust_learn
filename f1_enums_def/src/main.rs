@@ -2,30 +2,29 @@
 enum IpAddrKind {
     //enum variants declaration
     V4,
-    V6
+    V6,
 }
 
 enum IpAddr {
     V4(u8, u8, u8, u8),
-    V6(String)
+    V6(String),
 }
 
 //enum with different variables
 enum Message {
-    _Quit, //no data associated
-    _Move {x:i32, y: i32}, //anonymous struct
-    Write(String), //string
-    _ChangeColor(i32, i32, i32) //3 i32 values
+    _Quit,                       //no data associated
+    _Move { x: i32, y: i32 },    //anonymous struct
+    Write(String),               //string
+    _ChangeColor(i32, i32, i32), //3 i32 values
 }
-
 
 fn main() {
     //let's enumerate the possibilities for IP type (v4 and v6)
-    //this is a case in which enums are a better choice 
+    //this is a case in which enums are a better choice
     //(instead of structs)
     //an IP can be either v4 or v6 but not both at the same time
     //so the enum data structure is appropriate
-    
+
     //instances creation
     let _four = IpAddrKind::V4;
     let _six = IpAddrKind::V6;
@@ -49,7 +48,7 @@ fn main() {
     // }
 
     //we can do the same by using only enums
-    //with enums each variant can have different types and 
+    //with enums each variant can have different types and
     //amounts of associated data
     //(see "IpAddr" enum above)
 
@@ -69,14 +68,17 @@ fn main() {
 
     enum _IpAddr2 {
         V4(_Ip4Addr),
-        V6(_Ip6Addr)
+        V6(_Ip6Addr),
     }
 
     //(see enum "Message" above)
     //this definition is similar to defining different kinds of struct
     //definitions
     struct _QuitMessage;
-    struct _MoveMessage {x:i32, y: i32}
+    struct _MoveMessage {
+        x: i32,
+        y: i32,
+    }
     struct _WriteMessage(String);
     struct _ChangeColorMessage(i32, i32, i32);
 
@@ -93,14 +95,14 @@ fn main() {
     //this enum is Option<T> and it is defined by the std lib
     enum _Option<T> {
         Some(T),
-        None
+        None,
     }
     //Option<T> is so useful that it's even included in the prelude
     //you can use Some and None directly without the Option:: prefix
     //Option is a std enum and Some(T) and None are std variants
 
     //<T> syntax express a generic type parameter
-    
+
     //Some express the presence of the value (the value is held
     //within the Some)
     //None express that we don't have a valid value

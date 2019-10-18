@@ -1,6 +1,6 @@
 //function declared through the fn keyword
 //snake code syntax -> my_function(), let my_variable, ...
-//the function declaration can be found 
+//the function declaration can be found
 //anywhere in the program
 
 //statement are istructions that perform some action
@@ -8,7 +8,7 @@
 //INCLUDE ENDING SEMICOLON
 //example: let x = (let y = 5); -> error
 //(in ruby or c you can write x = y = 6)
-//(statements -> create/assign a variable/value, 
+//(statements -> create/assign a variable/value,
 //define a function, ...)
 
 //expression evaluate to a resulting value
@@ -17,7 +17,7 @@
 //(expressions -> call a function, call a macro, {} block, ...)
 
 //return value of a function -> return keyword
-//all functions return implicitly the value of the 
+//all functions return implicitly the value of the
 //final expression in the block of the body
 //you must declare the type of the return value
 //with -> operator
@@ -39,13 +39,13 @@ fn main() {
     println!("\nplus_one: {}", plus_one(5));
 }
 
-fn function1(){
+fn function1() {
     println!("\nfunction1");
 }
 
-//in function signatures you must declare 
+//in function signatures you must declare
 //the type of each parameter
-fn function2(x: i32, y: i32){
+fn function2(x: i32, y: i32) {
     println!("\nfunction2 param x: {}", x);
     println!("function2 param y: {}", y);
 }

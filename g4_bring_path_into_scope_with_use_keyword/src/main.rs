@@ -1,4 +1,4 @@
-//one the other hand, when bringing in structs, enums and 
+//one the other hand, when bringing in structs, enums and
 //other items with use, it's idiomatic to specify the full path
 //(for example let's show the idiomatic way to bring the std lib's
 //HashMap struct into the scope of a binary crate)
@@ -8,7 +8,7 @@ fn main() {
     let mut map = HashMap::new();
     map.insert(1, 2);
 
-    for item in map.iter(){
+    for item in map.iter() {
         println!("{:?}", item);
     }
 }
@@ -22,10 +22,10 @@ fn main() {
 //use std::io;
 //use std::cmp::Ordering;
 
-//instead we can use nested paths to bring the same items into 
+//instead we can use nested paths to bring the same items into
 //scope in one line
 //we do this by specifying the common part of the path followed
-//by :: and then {} around a list of the parts of the paths that 
+//by :: and then {} around a list of the parts of the paths that
 //differ
 
 // use std::{io, cmp::Ordering};
@@ -37,7 +37,7 @@ fn main() {
 //use std::io;
 //use std::io::Write;
 
-//the common part of these 2 paths is std::io 
+//the common part of these 2 paths is std::io
 //to merge these 2 paths into one use statement we can use self
 //in the nested path
 

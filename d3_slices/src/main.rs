@@ -5,7 +5,7 @@ fn main() {
 
     //&string[start..end]
     //start index is included
-    //end index is excluded (declare 1 more than 
+    //end index is excluded (declare 1 more than
     //the last position in the slice)
     let hello = &s[0..5];
     let world = &s[6..11];
@@ -13,10 +13,10 @@ fn main() {
     println!("hello: \"{}\"\nworld: \"{}\"", hello, world);
 
     //operator .. -> rust's range syntax
-    //you can drop initial value if you want to start at the 
+    //you can drop initial value if you want to start at the
     //first index (zero)
     let hello2 = &s[..5];
-    
+
     //or if you want you can drop the last (also using len)
     let len = s.len();
 
@@ -28,15 +28,17 @@ fn main() {
     let all = &s[..];
     //let all = &s[0..len]
 
-    println!("\nhello2: \"{}\"\nworld2: \"{}\"\nworld3: \"{}\"\nall: \"{}\"", 
-    hello2, world2, world3, all);
+    println!(
+        "\nhello2: \"{}\"\nworld2: \"{}\"\nworld3: \"{}\"\nall: \"{}\"",
+        hello2, world2, world3, all
+    );
 
     //test function that return the first world of a sentence
     //using string slices
     let teststring = String::from("hello world by me!");
     let first = first_word(&teststring);
     println!("\ntest: \"{}\"\nfirst: \"{}\"", teststring, first);
-    
+
     let teststring2 = String::from("helloworld byme!");
     let first2 = first_word(&teststring2);
     println!("\ntest: \"{}\"\nfirst: \"{}\"", teststring2, first2);
@@ -54,7 +56,7 @@ fn main() {
     //string slices as parameters
     //let's create a new modified version of the first_world
     //function
-    //new signature -> 
+    //new signature ->
     //fn mod_first_world(s: &str) -> &str {
 
     let my_s = String::from("new string");
@@ -70,9 +72,9 @@ fn main() {
 
     //other types of slices
     //array slices
-    let a = [1,2,3,4,5,6,7,8,9,10];
+    let a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     let slice = &a[1..9];
-    
+
     print!("\nog array: [ ");
     for item in a.iter() {
         print!("{} ", item);

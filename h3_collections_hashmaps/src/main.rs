@@ -6,7 +6,7 @@ fn main() {
     //into memory
     //hash maps  are useful when you want to look up data not by using an index, as you can do with
     //vectors, but by using a key that can be of any type
-    
+
     //creating a new hash map
     //you can create an empty hash map with new and add elements with insert
 
@@ -19,9 +19,9 @@ fn main() {
 
     println!("\n{:?}", scoresx);
     //note that we need to first use the HashMap from the collections portion of the std lib
-    //because of our 3 common collections, this one is the least ofter used so it's not included 
+    //because of our 3 common collections, this one is the least ofter used so it's not included
     //int the features brought into scope automatically in the prelude
-    //hash maps also have less support from the std lib (for example there's no built-in macro 
+    //hash maps also have less support from the std lib (for example there's no built-in macro
     //to construct them)
 
     //just like vectors, hash maps store their data on the heap
@@ -32,18 +32,18 @@ fn main() {
     //(where each tuple consists of a key and its value)
     //the collect method gathers data into a number of collection types, including hash maps
 
-    //if we have a vector of keys and a vector of values, we can use the zup method to create a 
+    //if we have a vector of keys and a vector of values, we can use the zup method to create a
     //vector of tuples and then we can use the collect method to create our hash map
 
     let teams = vec![String::from("blue"), String::from("yellow")];
     let initial_scores = vec![10, 50];
 
-    let scores: HashMap<_,_> = teams.iter().zip(initial_scores.iter()).collect();
+    let scores: HashMap<_, _> = teams.iter().zip(initial_scores.iter()).collect();
 
     println!("\n{:?}", scores);
     //the type annotation HashMap<_,_> is needed here because it's possible to collect into many
     //different data structures and rust doesn't know wichi you want unless you specify
-    //for the paramenters for the key and values types we use _ and rust can infer the types that 
+    //for the paramenters for the key and values types we use _ and rust can infer the types that
     //the hash map contains based on the types of the data in the vectors
 
     //hash maps and ownership

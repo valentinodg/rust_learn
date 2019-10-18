@@ -1,8 +1,7 @@
 fn main() {
     //scalar and compounds
     //rust is statically typed
-    let variable: u32 = "42".parse()
-        .expect("not a number!");
+    let variable: u32 = "42".parse().expect("not a number!");
     println!("\nvariable: {}", variable);
 
     //scalar type -> single value
@@ -12,13 +11,13 @@ fn main() {
     // 4-char
 
     //integers (default -> i32 (best performance on modern cpus))
-    /*  
+    /*
         8bit      i8        u8
         16bit     i16       u16
         32bit     i32*      u32
         64bit     i64       u64
         128bit    i128      u128
-        arch      isize     usize 
+        arch      isize     usize
     */
     //2's complement
     //from -(2^n-1) or 0 to 2^n-1 inclusive
@@ -29,16 +28,16 @@ fn main() {
         hex:        0xff
         octal:      0o77
         binary:     0b1111_0000
-        byte:       b'A' (only u8)     
+        byte:       b'A' (only u8)
     */
     //in case of runtime error (panic) -> integer overflow error
     //in --release compile mode the program doesn't crash because rust
     //performs a "wrap around" conversion (formally an error)
-    //wrap around u8 example: 256 -> 0, 257 -> 1, etc... 
+    //wrap around u8 example: 256 -> 0, 257 -> 1, etc...
     //for explicit manually wrapping use the Wrapping std library
 
     //floating point (default -> f64 (roughtly same performance of f32 on modern cpus))
-    /*  
+    /*
         32bit     f32 (single precision)
         64bit     f64* (double precision)
     */
@@ -65,7 +64,7 @@ fn main() {
     let rem = 43 % 5;
     println!("rem: {}", rem);
 
-    //boolean 
+    //boolean
     //1 byte size (true, false)
     let t = true;
     let f: bool = false; //explicit type annotation
@@ -90,29 +89,31 @@ fn main() {
     //tuple
     //multiple types values
     //fixed lenght
-    let tup: (i32,f64,u8) = (500,6.4,1);
+    let tup: (i32, f64, u8) = (500, 6.4, 1);
     //destructuring tuple and print
-    let (a,b,c) = tup;
+    let (a, b, c) = tup;
     println!("\ntup (destructuring): ({}, {}, {})", a, b, c);
     //pattern matching for selecting tuple elements
     //first index is 0
     let five_hundred = tup.0;
     let six_point_four = tup.1;
     let one = tup.2;
-    println!("tup (pattern matching): ({}, {}. {})", 
-        five_hundred, six_point_four, one);
+    println!(
+        "tup (pattern matching): ({}, {}. {})",
+        five_hundred, six_point_four, one
+    );
 
-    //array 
+    //array
     //single type values
     //fixed lenght
     //values on a stack
     //not flexible like the vector type
-    let nar = [1,2,3,4,5];
-    let _snar: [i32; 5] = [1,2,3,4,5];   //[type, lenght]
-    let dnar = [3; 5];                  //[values, lenght] -> [3,3,3,3,3]
-    let _sar = ["jan", "feb", "mar", "apr",
-               "may", "jun", "jul", "aug",
-               "sep", "oct", "nov", "dec"] ;
+    let nar = [1, 2, 3, 4, 5];
+    let _snar: [i32; 5] = [1, 2, 3, 4, 5]; //[type, lenght]
+    let dnar = [3; 5]; //[values, lenght] -> [3,3,3,3,3]
+    let _sar = [
+        "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
+    ];
     //static print
     let frs = nar[0];
     let sec = nar[1];

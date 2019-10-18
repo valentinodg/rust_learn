@@ -14,15 +14,16 @@ fn main() {
     let height1 = 50;
 
     println!("\nrect area (with variables) {}", area(width1, height1));
-    
+
     //refactor with tuples
-    let rect1  = (30, 50);
+    let rect1 = (30, 50);
 
     println!("\nrect area (with tuples) {}", area2(rect1));
 
     //refactor with structs (go on top for struct def)
-    let rect2 = Rectangle{
-        width: 30, height: 50
+    let rect2 = Rectangle {
+        width: 30,
+        height: 50,
     };
 
     println!("\nrect area (with structs) {}", area3(&rect2));
@@ -31,8 +32,9 @@ fn main() {
     //#[derive(Debug)]
     //{:?} -> debug print
     //{:#?} -> debud pretty print
-    let rectx = Rectangle{
-        width: 50, height: 50
+    let rectx = Rectangle {
+        width: 50,
+        height: 50,
     };
     println!("\nrectx {:#?}", rectx);
 }
@@ -43,7 +45,7 @@ fn area(width: u32, height: u32) -> u32 {
 }
 
 //refactor with tuples
-fn area2(dimensions: (u32,u32)) -> u32 {
+fn area2(dimensions: (u32, u32)) -> u32 {
     dimensions.0 * dimensions.1
 }
 

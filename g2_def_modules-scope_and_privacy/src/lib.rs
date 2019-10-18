@@ -9,7 +9,7 @@
 //modules let us organize code within a crate into groups for
 //readability and easy reuse
 //modules also control the privacy of items, which is wheather
-//an item can be used by outside code (public) or is an 
+//an item can be used by outside code (public) or is an
 //internal implementation detail and not available for outside
 //use (private)
 
@@ -39,7 +39,7 @@ mod _front_of_house {
 //and name why they are related
 
 //src/main.rs and src/lib.rs are called crate roots
-//the reason for their name is that the contents of either of 
+//the reason for their name is that the contents of either of
 //these 2 files form a module named crate at the root of the
 //crate's module structure, known as the module tree
 

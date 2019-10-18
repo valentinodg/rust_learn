@@ -16,7 +16,7 @@ fn main() {
     let y = y * 2;
     println!("\ny: {}", y);
 
-    //shadowing for different types 
+    //shadowing for different types
     //(warning on prefix)
     let spaces = "    "; //4 spaces
     let spaces = spaces.len();

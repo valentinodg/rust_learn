@@ -1,7 +1,7 @@
 #[derive(Debug)]
 enum UsState {
     Alabama,
-    _Alaska
+    _Alaska,
 }
 
 enum Coin {
@@ -11,7 +11,7 @@ enum Coin {
     //another useful feature of match arms is that we can bind to
     //he parts of the values that match the pattern (this is how
     //we can extract values out of enum variants)
-    Quarter(UsState)
+    Quarter(UsState),
 }
 
 fn main() {
@@ -25,7 +25,7 @@ fn main() {
     println!("coin1: {}", value_in_cents(coin1));
 
     println!("");
-    
+
     let state = UsState::Alabama;
     let coin2 = Coin::Quarter(state);
     println!("coin2: {}", value_in_cents(coin2));
@@ -37,7 +37,7 @@ fn main() {
     let _none = plus_one(None); //fn returns None
 
     //the _ placeholder
-    //we can use the _ pattern when we don't want to list all 
+    //we can use the _ pattern when we don't want to list all
     //possible values
     let some_u8_value = 0u8;
     match some_u8_value {
@@ -49,10 +49,10 @@ fn main() {
         //case) that aren't specified BEFORE it
         //the () is just the unit value, so nothing will happen in
         //the _ case
-        //the match expression can be a bit wordy in a situation in 
+        //the match expression can be a bit wordy in a situation in
         //which we care about only one of the cases, for this situation
         //rust provides if let
-        _ => ()
+        _ => (),
     }
 }
 
@@ -74,14 +74,14 @@ fn value_in_cents(coin: Coin) -> u8 {
         Coin::Penny => {
             println!("lucky penny!");
             1
-        },
+        }
         Coin::_Nickel => 5,
         Coin::_Dime => 10,
         Coin::Quarter(state) => {
             println!("state quarter from {:?}", state);
             25
         }
-    } 
+    }
 }
 
 //matches are exhaustive and if (for example) avoid to put within the
@@ -93,7 +93,6 @@ fn value_in_cents(coin: Coin) -> u8 {
 fn plus_one(x: Option<i32>) -> Option<i32> {
     match x {
         None => None,
-        Some(i) => Some(i + 1)
+        Some(i) => Some(i + 1),
     }
 }
-

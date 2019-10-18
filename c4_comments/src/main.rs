@@ -5,7 +5,7 @@ fn main() {
     //comment
 
     /*
-    another type of 
+    another type of
     multiline comment
     */
 
