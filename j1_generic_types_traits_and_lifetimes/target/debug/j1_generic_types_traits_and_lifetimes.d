@@ -1,0 +1,1 @@
+/Users/valentino/code/rust_learn/j1_generic_types_traits_and_lifetimes/target/debug/j1_generic_types_traits_and_lifetimes.dSYM: /Users/valentino/code/rust_learn/j1_generic_types_traits_and_lifetimes/src/main.rs
