@@ -39,8 +39,8 @@ fn main() {
     let result = largest_i32(&number_list);
     println!("\nthe largest number is {}", result);
 
-    let number_list2 = vec!['c', 'r', 'g', 's', 'e', 'm', 'q'];
-    let result2 = largest_char(&number_list2);
+    let char_list = vec!['c', 'r', 'g', 's', 'e', 'm', 'q'];
+    let result2 = largest_char(&char_list);
     println!("the largest char is {}", result2);
     //the 2 functions: largest_i32 and largest, have the same bodies but accept
     //different type of parameter (i32 and char respectively)
@@ -59,12 +59,12 @@ fn main() {
     //let's write the new function (go below)
     //let's call the new function using an i32 slice and a char slice references
 
-    let number_list3 = vec![34, 50, 24, 100, 65];
-    let resul3 = largest_i32(&number_list3);
-    println!("\nthe largest number is {}", resul3);
+    let number_list2 = vec![34, 50, 24, 100, 65];
+    let result3 = largest_i32(&number_list2);
+    println!("\nthe largest number is {}", result3);
 
-    let number_list4 = vec!['y', 'm', 'a', 'q'];
-    let result4 = largest_char(&number_list4);
+    let char_list2 = vec!['y', 'm', 'a', 'q'];
+    let result4 = largest_char(&char_list2);
     println!("the largest char is {}", result4);
 
     //in struct definitions
@@ -183,6 +183,17 @@ fn main() {
     //definition by hand
     //the process of monomorphization makes rust’s generics extremely efficient at
     //runtime
+
+    //AFTER THE FIX:
+    //we can use the generic largest function only on slice of types that implements the
+    //PartialOrd and Copy traits
+    let number_listx = vec![45, 78, 785, 100, 4];
+    let resultx = largest(&number_listx);
+    println!("\nthe largest number is {}", resultx);
+
+    let char_listx = vec!['f', 'r', 'h', 'g'];
+    let resultx2 = largest(&char_listx);
+    println!("the largest char is {}", resultx2);
 }
 
 //the generic type parameter must to be placed inside < >, between the name of the
@@ -191,7 +202,31 @@ fn main() {
 //named list, which is a slice of values of type T and returns a value of the same
 //type T
 
-fn lagest<T>(list: &[T]) -> T {
+//THIS CODE WON'T COMPILE (compiler -> std::cmp::PartialOrd, trait)
+//the error states that the body of largest won't work for all possible types that T
+//could be, because we want to compare values of type T in the body, we can only use
+//types those values can be ordered
+//to enable comparisons, the std lib has the std::cmp::PartialOrd trait that you can
+//implement on types
+//
+// fn largest<T>(list: &[T]) -> T {
+//     let mut largest = list[0];
+//
+//     for &item in list.iter() {
+//         if item > largest {
+//             largest = item;
+//         }
+//     }
+//     largest
+// }
+//
+//FIX:
+//in the body of largest we wanted to compare 2 values of type T using the > operator
+//because that operator is definied as a default method on the std lib trait
+//std::cmp::PartialOrd, we need to specify PartialOrd in the trait bounds for T so the
+//largest function can work on slices of any type that we can compare
+//we don't need to bring PartialOrd into scope because it's in the prelude
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
     let mut largest = list[0];
 
     for &item in list.iter() {
@@ -201,13 +236,29 @@ fn lagest<T>(list: &[T]) -> T {
     }
     largest
 }
+//we need to insert PartialOrd AND Copy using the + syntax because we want to implement
+//this function only on slices of type i32 and char
+//types like i32 anc char that have a known size can be stored on the stack, so they
+//implements the Copy trait, but when we made the largest function generic, it became
+//possible for the list parameter to have types in it that don't implement the Copy trait
+//using PartialOrd + Copy, we want to write a new form for the generic largest function
+//that will compile as long as the types of the values in the slice that we pass into the
+//function implements the PartialOrd and Copy traits (like i32 and char)
 
-//THIS CODE WON'T COMPILE (compiler -> std::cmp::PartialOrd, trait)
-//the error states that the body of largest won't work for all possible types that T
-//could be, because we want to compare values of type T in the body, we can only use
-//types those values can be ordered
-//to enable comparisons, the std lib has the std::cmp::PartialOrd trait that you can
-//implement on types
+//ALTERNATE SOLUTIONS FOR FIXING
+//if we don't want to restrict the largest function to the types that implements the Copy
+//trait, we could specify that T has the trait bound Clone instead of Copy
+//then we could clone each value in the slice when we want the largest function to have
+//ownership
+//useing the clone function means we're potentially making more heap allocations in the
+//case of types that own head data (like Strings) and heap allocations can be slow if
+//we're working with large amounts of data
+
+//another way we could implement largest is for the function to return a reference to a
+//T value in the slice
+//if we change the return type to &T instead of T, thereby changing the body of the
+//function to return a reference, we wouldn't need the Clone or Copy trait bounds and we
+//could avoid heap allocations
 
 //the syntax for using generics in struct definitions is similar to that used in
 //function definitions: first we declare the name of the type parameter inside < >
