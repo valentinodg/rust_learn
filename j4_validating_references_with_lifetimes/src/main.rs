@@ -113,6 +113,24 @@ fn main() {
 
     // AFTER FIX:
     
+    // the function signature now tells rust that for some lifetime 'a, the function takes
+    // 2 parameters, both of which are string slices that live at least as long as lifetime
+    // 'a
+    // the function signature also tells rust that the string slice returned from the function
+    // will live at least as long as lifetime 'a
+    // this means taht the lifetime of the reference returned by the longest function
+    // is the same as the smaller of the lifetimes of the references passed in
+    // (REMARK: when we specify the lifetime parameters in this function signature,
+    // we're not changing the lifetimes of any values passed in or returned, we're specifying
+    // that the borrow checker should reject any values that don't adhere to these 
+    // constraints)
+    // we must annotate lifetimes in function signature and not in function body (rust can
+    // analyze the code within the function without any help)
+    // when a function has references to or from code outside that function it becomes almost 
+    // impossible for rust to figure out the lifetimes of the paramenters or return values on 
+    // its own and so we must annotate the lifetimes manually
+    
+    // 
     
 }
 
