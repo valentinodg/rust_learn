@@ -1,3 +1,15 @@
+// this struct has one field, part, that holds a string slice, which is a reference
+// as with generic data types, we declare the name of the generic lifetime parameter
+// inside < > after the name of the struct so we can use the lifetime paramenter in the
+// body of the struct definition
+// this annotation means an instance of ImportantExcerpt can't outlive the reference it
+// holds in its part field 
+
+#[derive(Debug)]
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
 fn main() {
     // VALIDATING REFERENCES WITH LIFETIMES
     
@@ -82,7 +94,7 @@ fn main() {
     let string2 = "xyz";
 
     let result = longest(string1.as_str(), string2);
-    println!("the longest string is {}", result)
+    println!("the longest string is {}", result);
     
     // note that we want the function to take string slices, which are references, 
     // because we don't want the longest function to take ownership of its parameters
@@ -113,25 +125,119 @@ fn main() {
 
     // AFTER FIX:
     
-    // the function signature now tells rust that for some lifetime 'a, the function takes
-    // 2 parameters, both of which are string slices that live at least as long as lifetime
-    // 'a
-    // the function signature also tells rust that the string slice returned from the function
-    // will live at least as long as lifetime 'a
+    // the function signature now tells rust that for some lifetime 'a, the function 
+    // takes 2 parameters, both of which are string slices that live at least as long as 
+    // lifetime 'a
+    // the function signature also tells rust that the string slice returned from the 
+    // function will live at least as long as lifetime 'a
     // this means taht the lifetime of the reference returned by the longest function
     // is the same as the smaller of the lifetimes of the references passed in
     // (REMARK: when we specify the lifetime parameters in this function signature,
-    // we're not changing the lifetimes of any values passed in or returned, we're specifying
-    // that the borrow checker should reject any values that don't adhere to these 
-    // constraints)
-    // we must annotate lifetimes in function signature and not in function body (rust can
-    // analyze the code within the function without any help)
-    // when a function has references to or from code outside that function it becomes almost 
-    // impossible for rust to figure out the lifetimes of the paramenters or return values on 
-    // its own and so we must annotate the lifetimes manually
+    // we're not changing the lifetimes of any values passed in or returned, we're 
+    // specifying that the borrow checker should reject any values that don't adhere to  
+    // these constraints)
+    // we must annotate lifetimes in function signature and not in function body (rust 
+    // can analyze the code within the function without any help)
+    // when a function has references to or from code outside that function it becomes  
+    // almost impossible for rust to figure out the lifetimes of the paramenters or   
+    // return values on its own and so we must annotate the lifetimes manually
     
-    // 
+    // when we pass concrete references to longest, the concrete lifetime that is 
+    // substituted for 'a is the part of the scope of x that overlaps with the scope of
+    // y (in other words the generic lifetime 'a will get the concrete lifetime that 
+    // is equal to the smaller of the lifetimes of x and y)
+    // because we've annotated the returned reference with the same lifetime parameter
+    // 'a, the returned reference will also be valid for the lenght of the smaller of
+    // the lifetimes of x and y
+
+    let string3 = String::from("stringA");
+    {
+        let string4 = String::from("stringBlongest");
+        let result2 = longest(string3.as_str(), string4.as_str());
+        println!("the longest string is {}", result2);
+    }
+
+    // the borrow checker approves this code and the program compile
+    // (in this example)
+    // string3 is valid until the end of the outer scope
+    // string4 is valid until the end of the inner scope
+    // result2 references simething that is valid until the end of the inner scope
+    //    
+    // let string3 = String::from("stringA");
+    // let result2;
+    // {
+    //     let string4 = String::from("stringBlongest");
+    //     result2 = longest(string3.as_str(), string4.as_str());
+    // }
+    // println!("the longest string is {}", result2);
+    //
+    // in this way the code won't compile
+    // the error shows that for result2 to be valid for the println! statement, string4
+    // and therefore result2 will contain a reference to string3, because string3 has
+    // not gone out of scope yet, a reference to string3 will still be valid for the
+    // println! statement
+    // however, the compiler can't see that the reference is valid in this case
+    // we've told rust that the lifetime of the reference returned by the longest 
+    // function is the same as the smaller of the lifetimes of the references passed in
+    // the borrow checker disallows this code as possibly having an invalid reference
+
+    // THINKING IN TERMS OF LIFETIMES
+
+    // let's modify the longest function to always return the first parameter that it 
+    // receives (and not the longest string)
+    // (first function, go below)
+
+    // when returning a reference from a function, the lifetime parameter for the return
+    // type needs to match the lifetime parameter for one of the parameters
+    // if the reference returned does not refer to one of the parameters, it must refer 
+    // to a value created within this function, which would be a dangling reference 
+    // because the value will go out of scope at the end of the function
+    // (for example)
+    //
+    // fn longest<'a>(x: &'a str, y: &str) -> &'a str {
+    //     let result = String::from("really long string");
+    //     result.as_str()
+    // }
+    //
+    // even though we've specified a lifetime parameter 'a for the return type, this
+    // implementation will fail to compile because the return value lifetime is not 
+    // related to the lifetime of the parameters at all
+    // the problem is that result goes out of scope and gets cleaned up at the end of
+    // the longest function
+    // we're also trying to return a reference to result from the function 
+    // there is no way we can specify lifetime parameters that would change the dangling
+    // and rust won't let us create a dangling reference
+    // (in this case the best fix would be to return an owned data type rather than a 
+    // reference so the calling function is then responsible for cleaning up the value)
+    // lifetime syntax is about connecting the lifetimes of various parameters and 
+    // return values of functions
+    // once they're connected, rust has enough information to allow memory-safe operations
+    // and disallow operations that would create dangling pointers or otherwise violate 
+    // memory safety
     
+    // LIFETIME ANNOTATIONS IN STRUCT DEFINITIONS
+
+    // so far, we've only defined structs to hold owned types
+    // is possible for structs to hold references, but in that case we would need to add
+    // a lifetime annotation on every reference in the struct's definition
+    // (struct ImportantExcerpy, go above)
+
+    let novel = String::from("novel novel novel. novelnovel novel novelnovel");
+    let first_sentence = novel.split('.')
+        .next()
+        .expect("'.' not found");
+    let i = ImportantExcerpt { part: first_sentence };
+    println!("i: {:?}", i);
+
+    // here we creates an instance of ImportantExcerpt struct that holds a reference to
+    // the first sentence fo the String owned by the variable novel
+    // the data in novel exists before the ImportantExcerpt instance is created
+    // in addition, novel doesn't go out of scope until after the ImportantExcerpt goes
+    // out of scope, so the reference in the ImportantExcerpt instance is valid
+
+    // LIFETIME ELISION
+
+    //
 }
 
 // this code won't compile; the return type needs a generic lifetime parameter on it
@@ -163,3 +269,13 @@ fn longest<'a>(str1: &'a str, str2: &'a str) -> &'a str {
 // the constraint we want to express in this signature is that all the references in the
 // parameters and the return value must have the same lifetime
 // we'll name the lifetime 'a and then add it to each reference
+
+// MOD LONGEST FUNCTION
+
+// we've specified a lifetime parameter 'a for the parameter x and the return type, but
+// not for the parameter y, because the lifetime of y does not have any relationship with
+// the lifetime of x or the return value
+
+fn _longest2<'a>(x: &'a str, _y: &str) -> &'a str {
+    x
+}
