@@ -237,6 +237,98 @@ fn main() {
 
     // LIFETIME ELISION
 
+    // we have learned that every reference has a lifetime and that you need to specify
+    // lifetime parameters for functions or structs that use references
+    // (look below -> first_word() function)
+
+    // the reason the first_word function compiles without lifetime annotations is 
+    // historical: in early versions of rust (pre-1.0) this code wouldn't have compiled
+    // because every reference needed an explicit lifetime
+    // at that time, the function signature would have been written like this
+    // 
+    // fn first_word<'a>(s: &'a str) -> &'a str {}
+    // 
+    // after writing a lot of rust code, the rust team found that rust programmers were
+    // entering the same lifetime annotations over and over in particular situations
+    // these situations were predictable and followed a few deterministic patterns so 
+    // the developers programmed these patterns into the compiler's code so the borrow
+    // checker could infer the lifetimes in these situations and wouldn't need explicit
+    // annotations
+    
+    // the patterns programmed into rust's analysis of references are called lifetime
+    // elision rules
+    // they're a set of particular cases that the compiler will consider, and if your
+    // code fits these cases, you don't need to write the lifetimes explicitly
+    // the elision rules don't provide full inference
+    // if rust deterministically applies the rules but there is still ambiguity as to 
+    // what lifetimes the references have, the compiler won't guess what the lifetime
+    // of the remaining should be (instead of guessing, the compiler will give you an
+    // error that you can resolve by adding the lifetime annotations)
+    
+    // lifetimes on function or method parameters are called input lifetimes
+    // lifetimes on return values are called output lifetimes
+
+    // the compiler uses 3 rules to figure out what lifetimes references have when there
+    // aren't explicit annotations
+    // the 1 rule applies to input lifetimes
+    // the 2 and 3 rules aplly to output lifetimes
+    // (these rules apply to fn definitions as well as impl blocks)
+
+    // the 1 rule is that each parameter that is a reference gets its own lifetime 
+    // parameter
+    // (for example)
+    // 
+    // a function with 1 parameter gets 1 lifetime parameter
+    // fn foo<'a>(x: &'a i32) {}
+    // 
+    // a function with 2 parameter gets 2 lifetime parameter
+    // fn foo<'a, 'b>(x: &'a i32, y: &'b i32) {}
+    // 
+    // ...
+
+    // the 2 rule is if there is exactly 1 input lifetime parameter, that lifetime is
+    // assigned to all output lifetime parameters
+    // (for example)
+    // 
+    // fn foo<'a>(x: &'a i32) -> &'a i32 {}
+
+    // the 3 rule is if there are multiple input lifetime parameters, but 1 of them is 
+    // &self or &mut self because this is a method, the lifetime of seld is assigned to
+    // all output lifetime parameters (this makes methods much nicer to read and write
+    // because fewer symbols are necessary)
+
+    // (application of the rules to the first_word function)
+    // (no lifetime parameters)
+    // fn first_word(s: &str) -> &str {}
+    // 
+    // (the compiler applies the 1 rule, which specifies that each parameter gets its
+    // own lifetime, let's call it 'a as usual)
+    // fn first_word<'a>(s: &'a str) -> &str {}
+    // 
+    // (the compiler applies the 2 rule because there is exactly 1 input lifetime; the
+    // 2 rule specifies that the lifetime of the 1 input parameter gets assigned to the
+    // output lifetime)
+    // fn first_word<'a>(s: &'a str) -> &'a str {}
+    // 
+    // (now the analysis is complete and all the references in this function signature
+    // have lifetimes)
+
+    // (application of the rules to the longest function)
+    // (no lifetime parameters)
+    // fn longest(x: &str, y: &str) -> &str {}
+    // 
+    // (the compiler applies the 1 rule, now we have 2 parameters and so 2 lifetimes)
+    // fn longest<'a, 'b>(x: &'a str, y: &'b str) -> &str {}
+    // 
+    // (the 2 rule doesn't apply because there is more than 1 input lifetime)
+    // (the 3 rule doesn't apply because longest is a function rather than a method, so
+    // none of the parameters are self)
+    // (the compiler worked through the lifetime elision rules but still couldn't figure
+    // out alle the lifetimes of the references in the signature (in this case the 
+    // return type's lifetime))
+
+    // LIFETIME ANNOTATIONS IN METHOD DEFINITIONS
+
     //
 }
 
@@ -278,4 +370,21 @@ fn longest<'a>(str1: &'a str, str2: &'a str) -> &'a str {
 
 fn _longest2<'a>(x: &'a str, _y: &str) -> &'a str {
     x
+}
+
+// FIRST_WORD FUNCTION
+
+// the first_word function will compile without lifetime annotations, even though the
+// parameter and return type are references
+
+fn _first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for(i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
 }
