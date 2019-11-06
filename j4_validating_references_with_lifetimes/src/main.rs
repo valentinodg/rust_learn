@@ -10,6 +10,27 @@ struct ImportantExcerpt<'a> {
     part: &'a str,
 }
 
+// the lifetime parameter declaration after impl and its use after the type name are 
+// required, but we're not required to annotate the lifetime of the reference to self
+// because of the 1 elision rule
+impl<'a> ImportantExcerpt<'a> {
+    fn _level(&self) -> i32 {
+        3
+    }
+}
+
+// (3 lifetime elision rule application)
+// there are 2 input lifetimes, so rust applies the 1 lifetime elision rule and gives
+// both &self and announcement their own lifetimes
+// then, because one of the parameters is &self, the return type gest the lifetime of
+// &self, and all lifetimes have been accounted for
+impl<'a> ImportantExcerpt<'a> {
+    fn _announce_and_return_part(&self, announcement: &str) -> &str {
+        println!("attention please: {}", announcement);
+        self.part
+    }
+}
+
 fn main() {
     // VALIDATING REFERENCES WITH LIFETIMES
     
@@ -329,7 +350,39 @@ fn main() {
 
     // LIFETIME ANNOTATIONS IN METHOD DEFINITIONS
 
-    //
+    // when we implement methods on a struct with lifetimes, we use the same syntax as
+    // that of generic type parameters
+    // where we declare and use the lifetime parameters depends on whether they're 
+    // related to the struct fields or the method parameters and return values
+    // lifetime names for struct fields always need to be declared after the impl 
+    // keyword and then used after the struct's name, because those lifetimes are part
+    // of the struct's type
+    // in method signatures inside the impl block, references might be tied to the 
+    // lifetime of references in the struct's fields or they might be indipendent
+    // the lifetime elision rules ofter make it os that lifetime annotations aren't
+    // necessary in method signatures
+    // (go above -> ImportantExcerpt struct)
+
+    // THE STATIC LIFETIME
+
+    // one special lifetime we need to discuss is 'static, which means that this 
+    // reference can live for the entire duration of the program
+    let _s: &'static str = "i have a static lifetime";
+    // the text of this string is stored directly in the program's binary, which is
+    // always available (the lifetime of all string literals is 'static)
+    // you might see suggestions to use the 'static lifetime in error messages, but
+    // before specifying 'static as the lifetime for a reference, consider that most
+    // of the time, the problem results from attempting to create a dangling reference
+    // or a mismatch of the available lifetime; in such cases, the solution is fixing
+    // those problems, not specifying the 'static lifetime
+    
+    // GENERIC TYPE PARAMETERS, TRAIT BOUNDS, AND LIFETIME TOGETHER
+
+    // (go below -> longest_with_announcement() function)
+    let string4 = String::from("woo");
+    let string5 = "wefet";
+    let result2 = longest_with_announcement(&string4, string5, "longest string is");
+    println!("\"{}\"", result2);
 }
 
 // this code won't compile; the return type needs a generic lifetime parameter on it
@@ -387,4 +440,29 @@ fn _first_word(s: &str) -> &str {
     }
 
     &s[..]
+}
+
+// NEW IMPLEMENTATION OF THE LONGEST FUNCTION
+
+// this is the longest function that returns the longer of 2 string slices
+// but now it has an extra parameter named ann of the generic type T, which can be 
+// filled in by any type that implements the Display trait as specified by the where
+// clause
+// this extra parameter will be printed before the function compares the lenghts of 
+// the string slices, which is why the Display trait bound is necessary
+// because lifetimes are a type of generic, the declarations of the lifetime parameter
+// 'a and the generic type paramenter T go in the same list inside the < > after the
+// function name
+
+use std::fmt::Display;
+
+fn longest_with_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+    where T: Display
+{
+    print!("ANNOUNCEMENT!: {} -> ", ann);
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
 }
